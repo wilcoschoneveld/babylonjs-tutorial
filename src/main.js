@@ -65,10 +65,32 @@ function createScene() {
         "scene.gltf",
         scene,
         ([racoon]) => {
-            racoon.scaling = new BABYLON.Vector3(0.25, 0.25, 0.25);
-            racoon.position.x = 0.5;
+            racoon.scaling = new BABYLON.Vector3(0.25, 0.25, -0.25);
+            racoon.position.x = 0.7;
+
+            scene.onBeforeRenderObservable.add(() => {
+                racoon.movePOV(0, 0, 0.015);
+                racoon.rotate(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(1));
+            });
         }
     );
+
+    function onPointerClick() {
+        console.log(scene.pointerX, scene.pointerY);
+        const pickInfo = scene.pick(scene.pointerX, scene.pointerY, (mesh) => mesh.name === "ground");
+        console.log(
+            //
+            pickInfo.pickedPoint.x.toFixed(2),
+            pickInfo.pickedPoint.y.toFixed(2),
+            pickInfo.pickedPoint.z.toFixed(2)
+        );
+    }
+
+    canvas.addEventListener("pointerdown", onPointerClick);
+
+    scene.onDispose = function () {
+        canvas.removeEventListener("pointerdown", onPointerClick);
+    };
 
     return scene;
 }
