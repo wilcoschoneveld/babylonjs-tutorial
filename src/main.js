@@ -3,6 +3,7 @@ import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { createGround, createHousings } from "./village";
 import { createCar } from "./car";
+import { showWorldAxis } from "./utility";
 
 function createScene() {
     const scene = new BABYLON.Scene(engine);
@@ -22,6 +23,8 @@ function createScene() {
     camera.attachControl(true);
 
     new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0));
+
+    showWorldAxis(scene, 0.5);
 
     createGround();
     createHousings();
@@ -64,6 +67,7 @@ function createScene() {
         scene,
         ([racoon]) => {
             racoon.scaling = new BABYLON.Vector3(0.25, 0.25, 0.25);
+            racoon.position.x = 0.5;
         }
     );
 
