@@ -4,6 +4,7 @@ import "@babylonjs/loaders";
 import { createSky, createGround, createHousings } from "./village";
 import { createCar } from "./car";
 import { showWorldAxis } from "./utility";
+import { createFountain } from "./fountain";
 
 function createScene() {
     const scene = new BABYLON.Scene(engine);
@@ -28,6 +29,7 @@ function createScene() {
     createSky();
     createGround();
     createHousings();
+    createFountain();
 
     const { car } = createCar();
     car.rotation.x = -Math.PI / 2;
