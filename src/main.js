@@ -73,21 +73,15 @@ async function createScene() {
     car.animations.push(animCar);
     scene.beginAnimation(car, 0, 210, true);
 
-    BABYLON.SceneLoader.ImportMesh(
-        "RootNode",
-        "./assets/low-poly_racoon_run_animation/",
-        "scene.gltf",
-        scene,
-        ([racoon]) => {
-            racoon.scaling = new BABYLON.Vector3(0.25, 0.25, -0.25);
-            racoon.position.x = 0.7;
+    BABYLON.SceneLoader.ImportMesh("RootNode", "./low-poly_racoon_run_animation/", "scene.gltf", scene, ([racoon]) => {
+        racoon.scaling = new BABYLON.Vector3(0.25, 0.25, -0.25);
+        racoon.position.x = 0.7;
 
-            scene.onBeforeRenderObservable.add(() => {
-                racoon.movePOV(0, 0, 0.015);
-                racoon.rotate(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(1));
-            });
-        }
-    );
+        scene.onBeforeRenderObservable.add(() => {
+            racoon.movePOV(0, 0, 0.015);
+            racoon.rotate(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(1));
+        });
+    });
 
     function onPointerClick() {
         console.log(scene.pointerX, scene.pointerY);
@@ -113,15 +107,19 @@ async function createScene() {
     return scene;
 }
 
+async function bootstrap() {
+    // Add your code here matching the playground format
+    const scene = await createScene(); //Call the createScene function
+    // Register a render loop to repeatedly render the scene
+    engine.runRenderLoop(function () {
+        scene.render();
+    });
+    // Watch for browser/canvas resize events
+    window.addEventListener("resize", function () {
+        engine.resize();
+    });
+}
+
 const canvas = document.getElementById("root"); // Get the canvas element
 const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-// Add your code here matching the playground format
-const scene = await createScene(); //Call the createScene function
-// Register a render loop to repeatedly render the scene
-engine.runRenderLoop(function () {
-    scene.render();
-});
-// Watch for browser/canvas resize events
-window.addEventListener("resize", function () {
-    engine.resize();
-});
+bootstrap();
