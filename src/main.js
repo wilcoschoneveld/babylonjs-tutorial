@@ -5,6 +5,7 @@ import { createSky, createGround, createHousings } from "./village";
 import { createCar } from "./car";
 import { showWorldAxis } from "./utility";
 import { createFountain } from "./fountain";
+import { createLamp } from "./lamp";
 
 function createScene() {
     const scene = new BABYLON.Scene(engine);
@@ -22,7 +23,8 @@ function createScene() {
 
     camera.attachControl(true);
 
-    new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0));
+    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0));
+    light.intensity = 0.3;
 
     showWorldAxis(scene, 0.5);
 
@@ -30,6 +32,16 @@ function createScene() {
     createGround();
     createHousings();
     createFountain();
+
+    const lamp1 = createLamp();
+    lamp1.position = new BABYLON.Vector3(2, 0, -1);
+
+    const lamp2 = createLamp();
+    lamp2.position = new BABYLON.Vector3(2.4, 0, 4.8);
+
+    const lamp3 = createLamp();
+    lamp3.position = new BABYLON.Vector3(-5, 0, 0.15);
+    lamp3.rotation.y = BABYLON.Tools.ToRadians(-80);
 
     const { car } = createCar();
     car.rotation.x = -Math.PI / 2;
