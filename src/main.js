@@ -7,7 +7,7 @@ import { showWorldAxis } from "./utility";
 import { createFountain } from "./fountain";
 import { createLamp } from "./lamp";
 
-function createScene() {
+async function createScene() {
     const scene = new BABYLON.Scene(engine);
     // Add a camera to the scene and attach it to the canvas
     const camera = new BABYLON.ArcRotateCamera(
@@ -20,7 +20,6 @@ function createScene() {
         scene
     );
     camera.lowerRadiusLimit = 2;
-
     camera.attachControl(true);
 
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0));
@@ -107,13 +106,17 @@ function createScene() {
         canvas.removeEventListener("pointerdown", onPointerClick);
     };
 
+    const xr = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [scene.getMeshByName("ground")],
+    });
+
     return scene;
 }
 
 const canvas = document.getElementById("root"); // Get the canvas element
 const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 // Add your code here matching the playground format
-const scene = createScene(); //Call the createScene function
+const scene = await createScene(); //Call the createScene function
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
     scene.render();
