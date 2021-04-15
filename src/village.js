@@ -1,12 +1,40 @@
 import * as BABYLON from "@babylonjs/core";
 
+export function createSky() {
+    //Skybox
+    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 150 });
+    const skyboxMaterial = new BABYLON.StandardMaterial("skyBox");
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox");
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skybox.material = skyboxMaterial;
+}
+
 export function createGround() {
-    const matGround = new BABYLON.StandardMaterial("matGroud");
-    matGround.diffuseColor = new BABYLON.Color3(0.1, 0.5, 0.1);
+    const largeGroundMat = new BABYLON.StandardMaterial("largeGroundMat");
+    largeGroundMat.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/environments/valleygrass.png");
+    largeGroundMat.specularColor = new BABYLON.Color3(0, 0, 0);
 
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 15, height: 15 });
+    //Create large ground for valley environment
+    const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap(
+        "largeGround",
+        "https://assets.babylonjs.com/environments/villageheightmap.png",
+        { width: 150, height: 150, subdivisions: 20, minHeight: 0, maxHeight: 10 }
+    );
 
-    ground.material = matGround;
+    largeGround.material = largeGroundMat;
+    largeGround.position.y = -0.01;
+
+    //Create Village ground
+    const groundMat = new BABYLON.StandardMaterial("groundMat");
+    groundMat.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/environments/villagegreen.png");
+    groundMat.diffuseTexture.hasAlpha = true;
+    groundMat.specularColor = new BABYLON.Color3(0, 0, 0);
+
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 24, height: 24 });
+    ground.material = groundMat;
 }
 
 export function createHouse(width) {

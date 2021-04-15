@@ -1,7 +1,7 @@
 import "./style.css";
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders";
-import { createGround, createHousings } from "./village";
+import { createSky, createGround, createHousings } from "./village";
 import { createCar } from "./car";
 import { showWorldAxis } from "./utility";
 
@@ -25,6 +25,7 @@ function createScene() {
 
     showWorldAxis(scene, 0.5);
 
+    createSky();
     createGround();
     createHousings();
 
@@ -77,7 +78,7 @@ function createScene() {
 
     function onPointerClick() {
         console.log(scene.pointerX, scene.pointerY);
-        const pickInfo = scene.pick(scene.pointerX, scene.pointerY, (mesh) => mesh.name === "ground");
+        const pickInfo = scene.pick(scene.pointerX, scene.pointerY, (mesh) => mesh.name === "largeGround");
         console.log(
             //
             pickInfo.pickedPoint.x.toFixed(2),
